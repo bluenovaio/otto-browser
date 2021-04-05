@@ -1,7 +1,7 @@
 // Types
 // ------
-export { RunTime } from './runtime/run';
+export {RunTime} from './runtime/run';
 
 // Public Functions
 // ------
-export { run } from './runtime/run';
+export {run} from './runtime/run';
