@@ -1,3 +1,3 @@
 # otto-browser
 
-Core for running otto actions.
+Core runtime for running otto actions.

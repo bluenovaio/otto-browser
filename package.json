@@ -1,9 +1,9 @@
 {
-  "name": "blueprint-npm-typescript",
-  "version": "1.0.0",
-  "description": "Template repository for TypeScript npm packages",
+  "name": "@bluenova/otto-browser",
+  "version": "0.0.1",
+  "description": "Core runtime for running otto actions",
   "main": "dist/main.js",
-  "repository": "git@github.com:bluenovaio/blueprint-npm-typescript.git",
+  "repository": "git@github.com:bluenovaio/otto-browser.git",
   "author": "@bluenovaio",
   "license": "MIT",
   "private": false,
@@ -13,7 +13,7 @@
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",
     "lint": "eslint src/**/*.ts",
-    "test": "jest --passWithNoTests"
+    "test": "jest"
   },
   "dependencies": {
     "pino": "^6.11.2",

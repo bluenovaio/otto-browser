@@ -7,6 +7,7 @@ describe('exec', () => {
   });
 
   it('passes in all args', () => {
+    // @ts-ignore
     expect(safe.exec((a: string, b: string) => { return [a, b].join('-'); }, ['foo', 'bar']))
       .toEqual('foo-bar');
   });
@@ -19,6 +20,7 @@ describe('execAsync', () => {
   });
 
   it('passes in all args', async () => {
+    // @ts-ignore
     expect(await safe.execAsync(async (a: string, b: string) => { return [a, b].join('-'); }, ['foo', 'bar']))
       .toEqual('foo-bar');
   });
