@@ -2,7 +2,7 @@ import * as playwright from 'playwright';
 
 import logger from '../lib/logger';
 import * as action from './action';
-import { Action } from './types';
+import { Action } from './actionTypes';
 
 export type RunTime = 'chromium'
   | 'webkit'

@@ -3,7 +3,7 @@ import { Page } from 'playwright';
 import * as navigateAction from './actions/navigate';
 import * as queryAction from './actions/query';
 import * as clickAction from './actions/click';
-import { Action } from './types';
+import { Action } from './actionTypes';
 
 function runAction (page: Page, action: Action) {
   switch (action.type) {

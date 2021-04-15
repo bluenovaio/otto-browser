@@ -1,6 +1,6 @@
 import * as playwright from 'playwright';
 
-import { Element, DOMAction, DOMActionResult } from '../types';
+import { Element, DOMAction, DOMActionResult } from '../actionTypes';
 import { execAsync } from '../../lib/safe';
 
 async function buildElement (element: playwright.ElementHandle | null): Promise<Element | undefined> {
