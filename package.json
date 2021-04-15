@@ -1,6 +1,6 @@
 {
   "name": "@bluenova/otto-browser",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Core runtime for running otto actions",
   "main": "dist/main.js",
   "repository": "git@github.com:bluenovaio/otto-browser.git",
