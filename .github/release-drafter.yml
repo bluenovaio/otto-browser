@@ -20,6 +20,9 @@ categories:
   - title: '🤖 Dependabot'
     label: 'dependencies'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+replacers:
+  - search: '/BN-(\d{1,5})/g'
+    replace: '[BN-$1](https://bluenova.atlassian.net/browse/BN-$1)'
 template: |
   ## Changes
   $CHANGES
