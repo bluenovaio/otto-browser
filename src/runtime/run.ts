@@ -1,7 +1,7 @@
 import * as playwright from 'playwright';
 
 import logger from '../lib/logger';
-import { Action, ActionResult, RuleEvent } from './types';
+import { Action, ActionResult, RuleEvent } from './actionTypes';
 import * as engine from './rules/engine';
 import * as action from './action';
 

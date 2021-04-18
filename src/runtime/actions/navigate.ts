@@ -1,7 +1,7 @@
 import * as playwright from 'playwright';
 
 import { execAsync } from '../../lib/safe';
-import { HTTPAction, HTTPActionResult, HTTPResponse } from '../types';
+import { HTTPAction, HTTPActionResult, HTTPResponse } from '../actionTypes';
 
 export async function buildResponse (response: playwright.Response | null): Promise<HTTPResponse | undefined> {
   if (response) {

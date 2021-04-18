@@ -3,7 +3,7 @@ import { Page } from 'playwright';
 import * as navigateAction from './actions/navigate';
 import * as queryAction from './actions/query';
 import * as clickAction from './actions/click';
-import { Action, ActionResult } from './types';
+import { Action, ActionResult } from './actionTypes';
 
 async function runAction (page: Page, action: Action): Promise<ActionResult> {
   switch (action.type) {
