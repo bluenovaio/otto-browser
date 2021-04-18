@@ -1,7 +1,7 @@
 import * as RulesEngine from 'json-rules-engine';
 import * as _ from 'lodash';
 
-import { Action, Rule } from '../types';
+import { Action, Rule } from '../actionTypes';
 
 function buildEventParams (conditions: RulesEngine.TopLevelCondition) {
   if (_.has(conditions, 'all')) {
