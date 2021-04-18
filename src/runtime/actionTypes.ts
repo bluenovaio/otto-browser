@@ -1,3 +1,5 @@
+import * as RulesEngine from 'json-rules-engine';
+
 // ===========================
 // ======= DataTypes =========
 // ===========================
@@ -60,8 +62,11 @@ export type ActionType = 'click'
   | 'navigate'
   | 'query';
 
+export type ActionConditions = RulesEngine.TopLevelCondition;
+
 export interface CoreConfig {
   type: ActionType;
+  conditions?: ActionConditions;
 }
 
 export interface CoreResult {
@@ -71,24 +76,30 @@ export interface CoreResult {
 // DOM
 // -----
 
+export type DOMActionType = 'click' | 'query';
+
 export interface DOMAction extends CoreConfig {
-  type: 'click' | 'query';
+  type: DOMActionType;
   selector: string;
 }
 
 export interface DOMActionResult extends CoreResult {
+  type: DOMActionType;
   element?: Element;
 }
 
 // HTTP
 // -----
 
+export type HTTPActionType = 'navigate';
+
 export interface HTTPAction extends CoreConfig {
-  type: 'navigate';
+  type: HTTPActionType;
   url: string;
 }
 
 export interface HTTPActionResult extends CoreResult {
+  type: HTTPActionType;
   request?: HTTPRequest;
   response?: HTTPResponse;
 }
@@ -98,3 +109,20 @@ export interface HTTPActionResult extends CoreResult {
 
 export type Action = DOMAction
   | HTTPAction
+
+export type ActionResult = DOMActionResult
+  | HTTPActionResult
+
+// ===========================
+// ========= Rules ===========
+// ===========================
+
+export type RuleType = 'assertion';
+
+export interface RuleEvent extends RulesEngine.Event {
+  type: RuleType;
+}
+
+export interface Rule extends RulesEngine.RuleProperties {
+  event: RuleEvent;
+}
