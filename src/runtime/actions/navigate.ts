@@ -24,6 +24,7 @@ export async function run (page: playwright.Page, action: HTTPAction): Promise<H
 
   return {
     type: 'navigate',
+    id: action.id,
     response: await buildResponse(response)
   };
 }

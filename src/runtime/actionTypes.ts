@@ -8,7 +8,9 @@ import * as RulesEngine from 'json-rules-engine';
 // ------
 
 export interface Element {
-  other?: string;
+  id?: string;
+  classNames?: string[];
+  tagName: string;
   innerHTML?: string;
   innerText?: string;
   visible?: boolean;
@@ -64,13 +66,15 @@ export type ActionType = 'click'
 
 export type ActionConditions = RulesEngine.TopLevelCondition;
 
-export interface CoreConfig {
+export interface CoreAction {
   type: ActionType;
+  id: string;
   conditions?: ActionConditions;
 }
 
-export interface CoreResult {
+export interface CoreActionResult {
   type: ActionType;
+  id: string;
 }
 
 // DOM
@@ -78,14 +82,14 @@ export interface CoreResult {
 
 export type DOMActionType = 'click' | 'query';
 
-export interface DOMAction extends CoreConfig {
+export interface DOMAction extends CoreAction {
   type: DOMActionType;
   selector: string;
 }
 
-export interface DOMActionResult extends CoreResult {
+export interface DOMActionResult extends CoreActionResult {
   type: DOMActionType;
-  element?: Element;
+  elements?: Element[];
 }
 
 // HTTP
@@ -93,12 +97,12 @@ export interface DOMActionResult extends CoreResult {
 
 export type HTTPActionType = 'navigate';
 
-export interface HTTPAction extends CoreConfig {
+export interface HTTPAction extends CoreAction {
   type: HTTPActionType;
   url: string;
 }
 
-export interface HTTPActionResult extends CoreResult {
+export interface HTTPActionResult extends CoreActionResult {
   type: HTTPActionType;
   request?: HTTPRequest;
   response?: HTTPResponse;
