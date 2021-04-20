@@ -64,7 +64,11 @@ export type ActionType = 'click'
   | 'navigate'
   | 'query';
 
-export type ActionConditions = RulesEngine.TopLevelCondition;
+export interface CoreActionConditions {
+  params?: Record<string, any>;
+}
+
+export type ActionConditions = RulesEngine.TopLevelCondition & CoreActionConditions;
 
 export interface CoreAction {
   type: ActionType;

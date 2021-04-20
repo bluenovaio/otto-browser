@@ -1,5 +1,7 @@
-// Types
-// ------
+// ===========================
+// ========= Types ===========
+// ===========================
+
 export { RunTime } from './runtime/run';
 export {
   ActionType,
@@ -7,9 +9,14 @@ export {
   DOMActionResult,
   HTTPAction,
   HTTPActionResult,
-  Action
+  ActionConditions,
+  Action,
+  ActionResult,
+  RuleEvent
 } from './runtime/actionTypes';
 
-// Public Functions
-// ------
+// ===========================
+// ======== Methods ==========
+// ===========================
+
 export { run } from './runtime/run';
