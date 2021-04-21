@@ -1,11 +1,12 @@
 import { Page } from 'playwright';
 
+import logger from '../lib/logger';
 import * as navigateAction from './actions/navigate';
 import { Action, ActionResult } from './actionTypes';
 import * as queryAction from './actions/query';
 import * as clickAction from './actions/click';
 
-async function runAction (page: Page, action: Action): Promise<ActionResult> {
+async function runAction(page: Page, action: Action): Promise<ActionResult> {
   switch (action.type) {
     case 'click':
       return await clickAction.run(page, action);
@@ -23,7 +24,7 @@ async function runAction (page: Page, action: Action): Promise<ActionResult> {
  * @param page
  * @param actions
  */
-export async function runAll (page: Page, actions: Action[]): Promise<ActionResult[]> {
+export async function runAll(page: Page, actions: Action[]): Promise<ActionResult[]> {
   const results = [];
 
   // We have to run in sequence for now so
@@ -31,9 +32,13 @@ export async function runAll (page: Page, actions: Action[]): Promise<ActionResu
   // in the correct order.
   for (let i = 0; i < actions.length; i++) {
     const action = actions[i];
-    results.push(
-      await runAction(page, action)
-    );
+    try {
+      results.push(
+        await runAction(page, action)
+      );
+    } catch (err) {
+      logger.error(err);
+    }
   }
 
   return results;

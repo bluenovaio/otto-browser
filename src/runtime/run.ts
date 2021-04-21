@@ -1,6 +1,7 @@
 import * as playwright from 'playwright';
 import * as _ from 'lodash';
 
+import logger from '../lib/logger';
 import { Action, ActionResult, RuleEvent } from './actionTypes';
 import * as engine from './rules/engine';
 import * as action from './action';
@@ -61,6 +62,7 @@ export async function run (config: RunConfig, actions: Action[]): Promise<RunRes
       actions: browserResults
     };
   } catch (err) {
+    logger.error(err);
     await browser.close();
   }
 }
