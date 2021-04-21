@@ -36,9 +36,7 @@ export async function runAll(
   for (let i = 0; i < actions.length; i++) {
     const action = actions[i];
     try {
-      results.push(
-        await runAction(page, action)
-      );
+      results.push(await runAction(page, action));
     } catch (err) {
       logger.error(err);
     }
