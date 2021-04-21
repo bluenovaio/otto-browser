@@ -1,5 +1,6 @@
 import { Page } from 'playwright';
 
+import logger from '../lib/logger';
 import * as navigateAction from './actions/navigate';
 import { Action, ActionResult } from './actionTypes';
 import * as queryAction from './actions/query';
@@ -34,7 +35,11 @@ export async function runAll(
   // in the correct order.
   for (let i = 0; i < actions.length; i++) {
     const action = actions[i];
-    results.push(await runAction(page, action));
+    try {
+      results.push(await runAction(page, action));
+    } catch (err) {
+      logger.error(err);
+    }
   }
 
   return results;
