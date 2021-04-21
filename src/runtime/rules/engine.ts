@@ -5,16 +5,21 @@ import { Action, Rule } from '../actionTypes';
 import * as collection from './operators/collection';
 import * as core from './operators/core';
 
-export function buildRules (actions: Action[]): Rule[] {
+export function buildRules(actions: Action[]): Rule[] {
   const rules: Rule[] = [];
 
   actions.forEach((action) => {
     if (action.conditions) {
+      const all = _.get(action, 'conditions.all', null);
+      const any = _.get(action, 'conditions.any', null);
+      const conditions = {} as RulesEngine.TopLevelCondition;
+      if (!all) {
+        _.set(conditions, 'any', any);
+      } else {
+        _.set(conditions, 'all', all);
+      }
       rules.push({
-        conditions: {
-          any: _.get(action, 'conditions.any'),
-          all: _.get(action, 'conditions.all')
-        },
+        conditions: conditions,
         event: {
           type: 'assertion',
           params: action.conditions.params
@@ -26,11 +31,30 @@ export function buildRules (actions: Action[]): Rule[] {
   return rules;
 }
 
-export function create (actions: Action[]): RulesEngine.Engine {
+export function create(actions: Action[]): RulesEngine.Engine {
   const engine = new RulesEngine.Engine([], { allowUndefinedFacts: false });
 
   // Operators
   // ----
+
+  // Remove default operations
+  [
+    'equal',
+    'notEqual',
+    'in',
+    'notIn',
+    'contains',
+    'doesNotContain',
+    'lessThan',
+    'lessThanInclusive',
+    'greaterThan',
+    'greaterThanInclusive'
+  ]
+    .forEach((operatorName) => {
+      engine.removeOperator(operatorName);
+    });
+
+  // Add internal operators
   engine.addOperator(new RulesEngine.Operator('nil', core.nil));
   engine.addOperator(new RulesEngine.Operator('notNil', core.notNil));
   engine.addOperator(new RulesEngine.Operator('equal', core.equal));
