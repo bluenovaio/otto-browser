@@ -22,7 +22,7 @@ jobs:
       - name: Install Packages
         run: yarn install
       - name: Format
-        run: yarn format
+        run: yarn format-check
       - name: Lint
         run: yarn lint
       - name: Test

@@ -5,7 +5,7 @@ import { Action, ActionResult } from './actionTypes';
 import * as queryAction from './actions/query';
 import * as clickAction from './actions/click';
 
-async function runAction (page: Page, action: Action): Promise<ActionResult> {
+async function runAction(page: Page, action: Action): Promise<ActionResult> {
   switch (action.type) {
     case 'click':
       return await clickAction.run(page, action);
@@ -23,7 +23,10 @@ async function runAction (page: Page, action: Action): Promise<ActionResult> {
  * @param page
  * @param actions
  */
-export async function runAll (page: Page, actions: Action[]): Promise<ActionResult[]> {
+export async function runAll(
+  page: Page,
+  actions: Action[]
+): Promise<ActionResult[]> {
   const results = [];
 
   // We have to run in sequence for now so
@@ -31,9 +34,7 @@ export async function runAll (page: Page, actions: Action[]): Promise<ActionResu
   // in the correct order.
   for (let i = 0; i < actions.length; i++) {
     const action = actions[i];
-    results.push(
-      await runAction(page, action)
-    );
+    results.push(await runAction(page, action));
   }
 
   return results;
