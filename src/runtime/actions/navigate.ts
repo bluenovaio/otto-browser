@@ -12,7 +12,7 @@ export async function buildResponse (response: playwright.Response | null): Prom
     } catch (err) {}
 
     try {
-      body = jsonBody ?? response.text();
+      body = jsonBody ?? await response.text();
     } catch (err) {}
 
     return {
