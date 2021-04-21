@@ -65,7 +65,7 @@ export type ActionType = 'click'
   | 'query';
 
 export interface CoreActionConditions {
-  params?: Record<string, any>;
+  params?: Record<string, unknown>;
 }
 
 export type ActionConditions = RulesEngine.TopLevelCondition & CoreActionConditions;
