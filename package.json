@@ -1,6 +1,6 @@
 {
   "name": "@bluenova/otto-browser",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Core runtime for running otto actions",
   "main": "dist/main.js",
   "repository": "git@github.com:bluenovaio/otto-browser.git",
@@ -10,8 +10,8 @@
   "scripts": {
     "build": "tsc",
     "prepublish": "tsc",
-    "format": "prettier --write **/*.ts",
-    "format-check": "prettier --check **/*.ts",
+    "format": "prettier --write src/**/*.ts",
+    "format-check": "prettier --check src/**/*.ts",
     "lint": "eslint src/**/*.ts",
     "test": "jest --coverage"
   },
