@@ -1,6 +1,6 @@
 import * as playwright from 'playwright';
+import * as _ from 'lodash';
 
-import logger from '../lib/logger';
 import { Action, ActionResult, RuleEvent } from './actionTypes';
 import * as engine from './rules/engine';
 import * as action from './action';
@@ -21,6 +21,10 @@ function getRunTime (runTime: RunTime) {
   }
 }
 
+// ===========================
+// ======== RunTime ==========
+// ===========================
+
 export interface RunConfig {
   runTime: RunTime;
   baseURL?: string;
@@ -31,7 +35,12 @@ export interface RunResult {
   actions: ActionResult[]
 }
 
-export async function run (config: RunConfig, actions: Action[]): Promise<unknown> {
+/**
+ * Runtime for Otto Browser
+ * @param config
+ * @param actions
+ */
+export async function run (config: RunConfig, actions: Action[]): Promise<RunResult | undefined> {
   const runTime = getRunTime(config.runTime);
   const browser = await runTime.launch();
   const page = await browser.newPage();
@@ -39,15 +48,19 @@ export async function run (config: RunConfig, actions: Action[]): Promise<unknow
   try {
     const ruleEngine = engine.create(actions);
     const browserResults = await action.runAll(page, actions);
-    const ruleEngineResults = await ruleEngine.run(browserResults);
+
+    const ruleEngineResults = await Promise.all(browserResults.map((browser) => {
+      return ruleEngine.run({ browser });
+    }));
+    const parsedResults = _.flatMap(ruleEngineResults, (result) => result.failureEvents);
 
     await browser.close();
+
     return {
-      events: ruleEngineResults.events,
+      events: parsedResults as RuleEvent[],
       actions: browserResults
     };
   } catch (err) {
-    logger.error(err.message);
     await browser.close();
   }
 }

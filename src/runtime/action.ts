@@ -1,9 +1,9 @@
 import { Page } from 'playwright';
 
 import * as navigateAction from './actions/navigate';
+import { Action, ActionResult } from './actionTypes';
 import * as queryAction from './actions/query';
 import * as clickAction from './actions/click';
-import { Action, ActionResult } from './actionTypes';
 
 async function runAction (page: Page, action: Action): Promise<ActionResult> {
   switch (action.type) {
@@ -18,6 +18,11 @@ async function runAction (page: Page, action: Action): Promise<ActionResult> {
   }
 }
 
+/**
+ * Run all actions
+ * @param page
+ * @param actions
+ */
 export async function runAll (page: Page, actions: Action[]): Promise<ActionResult[]> {
   const results = [];
 

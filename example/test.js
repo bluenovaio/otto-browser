@@ -12,9 +12,9 @@ const ottoBrowser = require('../dist/main');
     },
     {
       type: 'query',
-      selector: 'h1'
+      selector: 'div'
     },
   ]);
 
-  console.log(results);
+  console.log(JSON.stringify(results));
 })();
