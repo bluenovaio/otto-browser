@@ -1,6 +1,5 @@
 import * as playwright from 'playwright';
 
-import { execAsync } from '../../lib/safe';
 import { DOMAction, Element } from '../actionTypes';
 
 async function getProperty (element: playwright.ElementHandle, propertyName: string) {
@@ -14,6 +13,12 @@ async function getClassNames (element: playwright.ElementHandle) {
 }
 
 export async function buildElement (page: playwright.Page, action: DOMAction, element: playwright.ElementHandle): Promise<Element> {
+  let isChecked = false;
+
+  try {
+    isChecked = await element?.isChecked();
+  } catch (err) {}
+
   return {
     classNames: await getClassNames(element),
     id: await getProperty(element, 'id'),
@@ -22,7 +27,7 @@ export async function buildElement (page: playwright.Page, action: DOMAction, el
     innerText: await element?.innerText(),
     visible: await element?.isVisible(),
     hidden: await element?.isHidden(),
-    checked: !!(await execAsync(async () => await element?.isChecked())),
+    checked: isChecked,
     disabled: await element?.isDisabled(),
     enabled: await element?.isEnabled(),
     editable: await element?.isEditable()

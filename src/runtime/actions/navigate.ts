@@ -1,12 +1,20 @@
 import * as playwright from 'playwright';
 
-import { execAsync } from '../../lib/safe';
 import { HTTPAction, HTTPActionResult, HTTPResponse } from '../actionTypes';
 
 export async function buildResponse (response: playwright.Response | null): Promise<HTTPResponse | undefined> {
   if (response) {
-    const jsonBody = await execAsync(async () => await response.json());
-    const body = jsonBody ?? await execAsync(async () => await response.text());
+    let jsonBody = null;
+    let body = null;
+
+    try {
+      jsonBody = await response.json();
+    } catch (err) {}
+
+    try {
+      body = jsonBody ?? response.text();
+    } catch (err) {}
+
     return {
       body: body ? body.toString() : undefined,
       bodyType: jsonBody ? 'json' : 'unknown',
