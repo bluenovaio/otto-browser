@@ -26,17 +26,15 @@ export interface Element {
 
 export type HTTPHeaders = Record<string, string>;
 
-export type HTTPMethod = 'GET'
+export type HTTPMethod =
+  | 'GET'
   | 'POST'
   | 'PUT'
   | 'DELETE'
   | 'OPTIONS'
   | 'PATCH';
 
-export type HTTPBodyType = 'json'
-  | 'text'
-  | 'xml'
-  | 'unknown';
+export type HTTPBodyType = 'json' | 'text' | 'xml' | 'unknown';
 
 export interface HTTPResponse {
   bodyType: HTTPBodyType;
@@ -60,15 +58,14 @@ export interface HTTPRequest {
 // Core
 // ------
 
-export type ActionType = 'click'
-  | 'navigate'
-  | 'query';
+export type ActionType = 'click' | 'navigate' | 'query';
 
 export interface CoreActionConditions {
   params?: Record<string, unknown>;
 }
 
-export type ActionConditions = RulesEngine.TopLevelCondition & CoreActionConditions;
+export type ActionConditions = RulesEngine.TopLevelCondition &
+  CoreActionConditions;
 
 export interface CoreAction {
   type: ActionType;
@@ -115,11 +112,9 @@ export interface HTTPActionResult extends CoreActionResult {
 // Aggregate
 // -----
 
-export type Action = DOMAction
-  | HTTPAction
+export type Action = DOMAction | HTTPAction;
 
-export type ActionResult = DOMActionResult
-  | HTTPActionResult
+export type ActionResult = DOMActionResult | HTTPActionResult;
 
 // ===========================
 // ========= Rules ===========
