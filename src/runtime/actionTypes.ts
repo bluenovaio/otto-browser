@@ -79,6 +79,7 @@ export interface CoreAction {
 export interface CoreActionResult {
   type: ActionType;
   id: string;
+  rule?: RulesEngine.Event | null
 }
 
 // DOM

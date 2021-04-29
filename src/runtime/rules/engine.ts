@@ -5,29 +5,25 @@ import { Action, Rule } from '../actionTypes';
 import * as collection from './operators/collection';
 import * as core from './operators/core';
 
-export function buildRules (actions: Action[]): Rule[] {
-  const rules: Rule[] = [];
-
-  actions.forEach((action) => {
-    if (action.conditions) {
-      rules.push({
-        conditions: {
-          any: _.get(action, 'conditions.any'),
-          all: _.get(action, 'conditions.all')
-        },
-        event: {
-          type: 'assertion',
-          params: action.conditions.params
-        }
-      });
-    }
-  });
-
-  return rules;
+export function transformActionToRule(action: Action): Rule | null {
+  if (action.conditions) {
+    return {
+      conditions: _.pickBy({
+        any: _.get(action, 'conditions.any'),
+        all: _.get(action, 'conditions.all')
+      }, _.identity) as RulesEngine.TopLevelCondition,
+      event: {
+        type: 'assertion',
+        params: action.conditions.params
+      }
+    };
+  } else {
+    return null;
+  }
 }
 
-export function create (actions: Action[]): RulesEngine.Engine {
-  const engine = new RulesEngine.Engine([], { allowUndefinedFacts: false });
+export function create(rules: Rule[] = []): RulesEngine.Engine {
+  const engine = new RulesEngine.Engine(rules, { allowUndefinedFacts: false });
 
   // Operators
   // ----
@@ -57,13 +53,6 @@ export function create (actions: Action[]): RulesEngine.Engine {
   engine.addOperator(new RulesEngine.Operator('lessThanInclusiveEvery', collection.lessThanInclusiveEvery, _.isArray));
   engine.addOperator(new RulesEngine.Operator('lessThanInclusiveSome', collection.lessThanInclusiveSome, _.isArray));
   engine.addOperator(new RulesEngine.Operator('lessThanSome', collection.lessThanSome, _.isArray));
-
-  // Setup & Add Action Rules
-  // ----
-  const rules = buildRules(actions);
-  rules.forEach((rule) => {
-    engine.addRule(rule);
-  });
 
   return engine;
 }
