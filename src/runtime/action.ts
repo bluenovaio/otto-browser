@@ -26,7 +26,10 @@ async function runAction(page: Page, action: Action): Promise<ActionResult> {
  * @param page
  * @param actions
  */
-export async function runAll(page: Page, actions: Action[]): Promise<ActionResult[]> {
+export async function runAll(
+  page: Page,
+  actions: Action[]
+): Promise<ActionResult[]> {
   const results = [];
 
   // We have to run in sequence for now so

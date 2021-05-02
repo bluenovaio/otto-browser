@@ -3,9 +3,7 @@ import * as playwright from 'playwright';
 import { Action, ActionResult } from './actionTypes';
 import * as action from './action';
 
-export type RunTime = 'chromium'
-  | 'webkit'
-  | 'firefox';
+export type RunTime = 'chromium' | 'webkit' | 'firefox';
 
 function getRunTime(runTime: RunTime) {
   switch (runTime) {
@@ -29,7 +27,7 @@ export interface RunConfig {
 }
 
 export interface RunResult {
-  actions: ActionResult[]
+  actions: ActionResult[];
 }
 
 /**
@@ -37,7 +35,10 @@ export interface RunResult {
  * @param config
  * @param actions
  */
-export async function run(config: RunConfig, actions: Action[]): Promise<RunResult | undefined> {
+export async function run(
+  config: RunConfig,
+  actions: Action[]
+): Promise<RunResult | undefined> {
   const runTime = getRunTime(config.runTime);
   const browser = await runTime.launch();
   const page = await browser.newPage();
