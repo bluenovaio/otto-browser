@@ -5,39 +5,29 @@ import { Action, Rule } from '../actionTypes';
 import * as collection from './operators/collection';
 import * as core from './operators/core';
 
-export function buildRules(actions: Action[]): Rule[] {
-  const rules: Rule[] = [];
-
-  actions.forEach((action) => {
-    if (action.conditions) {
-      const all = _.get(action, 'conditions.all', null);
-      const any = _.get(action, 'conditions.any', null);
-      const conditions = {} as RulesEngine.TopLevelCondition;
-      if (!all) {
-        _.set(conditions, 'any', any);
-      } else {
-        _.set(conditions, 'all', all);
+export function transformActionToRule(action: Action): Rule | null {
+  if (action.conditions) {
+    return {
+      conditions: _.pickBy({
+        any: _.get(action, 'conditions.any'),
+        all: _.get(action, 'conditions.all')
+      }, _.identity) as RulesEngine.TopLevelCondition,
+      event: {
+        type: 'assertion',
+        params: action.conditions.params
       }
-      rules.push({
-        conditions: conditions,
-        event: {
-          type: 'assertion',
-          params: action.conditions.params
-        }
-      });
-    }
-  });
-
-  return rules;
+    };
+  } else {
+    return null;
+  }
 }
 
-export function create(actions: Action[]): RulesEngine.Engine {
-  const engine = new RulesEngine.Engine([], { allowUndefinedFacts: false });
+export function create(rules: Rule[] = []): RulesEngine.Engine {
+  const engine = new RulesEngine.Engine(rules, { allowUndefinedFacts: false });
 
   // Operators
   // ----
-
-  // Remove default operations
+  // Remove default operators
   [
     'equal',
     'notEqual',
@@ -54,7 +44,7 @@ export function create(actions: Action[]): RulesEngine.Engine {
       engine.removeOperator(operatorName);
     });
 
-  // Add internal operators
+  // Add core operators
   engine.addOperator(new RulesEngine.Operator('nil', core.nil));
   engine.addOperator(new RulesEngine.Operator('notNil', core.notNil));
   engine.addOperator(new RulesEngine.Operator('equal', core.equal));
@@ -81,13 +71,6 @@ export function create(actions: Action[]): RulesEngine.Engine {
   engine.addOperator(new RulesEngine.Operator('lessThanInclusiveEvery', collection.lessThanInclusiveEvery, _.isArray));
   engine.addOperator(new RulesEngine.Operator('lessThanInclusiveSome', collection.lessThanInclusiveSome, _.isArray));
   engine.addOperator(new RulesEngine.Operator('lessThanSome', collection.lessThanSome, _.isArray));
-
-  // Setup & Add Action Rules
-  // ----
-  const rules = buildRules(actions);
-  rules.forEach((rule) => {
-    engine.addRule(rule);
-  });
 
   return engine;
 }

@@ -1,10 +1,12 @@
 import { Page } from 'playwright';
+import * as _ from 'lodash';
 
-import logger from '../lib/logger';
+import { Action, ActionResult, Rule } from './actionTypes';
+import { transformActionToRule } from './rules/engine';
 import * as navigateAction from './actions/navigate';
-import { Action, ActionResult } from './actionTypes';
 import * as queryAction from './actions/query';
 import * as clickAction from './actions/click';
+import * as engine from './rules/engine';
 
 async function runAction(page: Page, action: Action): Promise<ActionResult> {
   switch (action.type) {
@@ -35,11 +37,22 @@ export async function runAll(
   // in the correct order.
   for (let i = 0; i < actions.length; i++) {
     const action = actions[i];
-    try {
-      results.push(await runAction(page, action));
-    } catch (err) {
-      logger.error(err);
-    }
+    const actionResult = await runAction(page, action);
+
+    // We have to run the Rules Engine here for every
+    // action individually to allow for the complex &
+    // flexible logic but in an isolated manner.
+    // In the future we will work to optimize this
+    // so we can speed up the run time of tests.
+    const ruleEngine = engine.create(
+      _.compact([transformActionToRule(action)]) as Rule[]
+    );
+    const rulesEngineResult = await ruleEngine.run({ browser: actionResult });
+    const [ruleResult] = rulesEngineResult.failureEvents;
+    results.push({
+      ...actionResult,
+      rule: ruleResult
+    });
   }
 
   return results;

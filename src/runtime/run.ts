@@ -1,9 +1,6 @@
 import * as playwright from 'playwright';
-import * as _ from 'lodash';
 
-import logger from '../lib/logger';
-import { Action, ActionResult, RuleEvent } from './actionTypes';
-import * as engine from './rules/engine';
+import { Action, ActionResult } from './actionTypes';
 import * as action from './action';
 
 export type RunTime = 'chromium' | 'webkit' | 'firefox';
@@ -30,7 +27,6 @@ export interface RunConfig {
 }
 
 export interface RunResult {
-  events: RuleEvent[];
   actions: ActionResult[];
 }
 
@@ -48,27 +44,13 @@ export async function run(
   const page = await browser.newPage();
 
   try {
-    const ruleEngine = engine.create(actions);
     const browserResults = await action.runAll(page, actions);
-
-    const ruleEngineResults = await Promise.all(
-      browserResults.map(browser => {
-        return ruleEngine.run({ browser });
-      })
-    );
-    const parsedResults = _.flatMap(
-      ruleEngineResults,
-      result => result.failureEvents
-    );
-
     await browser.close();
 
     return {
-      events: parsedResults as RuleEvent[],
       actions: browserResults
     };
   } catch (err) {
-    logger.error(err);
     await browser.close();
   }
 }
