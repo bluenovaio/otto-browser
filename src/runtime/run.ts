@@ -50,7 +50,6 @@ export async function run(config: RunConfig, actions: Action[]): Promise<RunResu
       actions: browserResults
     };
   } catch (err) {
-    console.log(`ERROR: ${err.message}`);
     await browser.close();
   }
 }

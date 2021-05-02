@@ -44,7 +44,6 @@ export async function runAll(page: Page, actions: Action[]): Promise<ActionResul
     const ruleEngine = engine.create(
       _.compact([transformActionToRule(action)]) as Rule[]
     );
-    console.log('actionResult', actionResult);
     const rulesEngineResult = await ruleEngine.run({ browser: actionResult });
     const [ruleResult] = rulesEngineResult.failureEvents;
     results.push({
