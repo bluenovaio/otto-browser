@@ -27,6 +27,24 @@ export function create(rules: Rule[] = []): RulesEngine.Engine {
 
   // Operators
   // ----
+  // Remove default operators
+  [
+    'equal',
+    'notEqual',
+    'in',
+    'notIn',
+    'contains',
+    'doesNotContain',
+    'lessThan',
+    'lessThanInclusive',
+    'greaterThan',
+    'greaterThanInclusive'
+  ]
+    .forEach((operatorName) => {
+      engine.removeOperator(operatorName);
+    });
+
+  // Add core operators
   engine.addOperator(new RulesEngine.Operator('nil', core.nil));
   engine.addOperator(new RulesEngine.Operator('notNil', core.notNil));
   engine.addOperator(new RulesEngine.Operator('equal', core.equal));
