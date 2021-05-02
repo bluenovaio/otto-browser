@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@jest/types": "^26.6.2",
+    "@types/express": "^4.17.11",
     "@types/jest": "^26.0.20",
     "@types/lodash": "^4.14.168",
     "@types/node": "^14.14.32",
@@ -36,6 +37,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "5",
+    "express": "^4.17.1",
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
     "ts-jest": "^26.5.3",

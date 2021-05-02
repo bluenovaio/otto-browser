@@ -7,7 +7,7 @@ import * as RulesEngine from 'json-rules-engine';
 // DOM
 // ------
 
-export interface Element {
+export interface DOMElement {
   id?: string;
   classNames?: string[];
   tagName: string;
@@ -58,7 +58,12 @@ export interface HTTPRequest {
 // Core
 // ------
 
-export type ActionType = 'click' | 'navigate' | 'query';
+export type ActionType = 'click' | 'navigate' | 'type'
+  | 'uncheck'
+  | 'check'
+  | 'submit'
+  | 'select'
+  | 'query';
 
 export interface CoreActionConditions {
   params?: Record<string, unknown>;
@@ -82,16 +87,25 @@ export interface CoreActionResult {
 // DOM
 // -----
 
-export type DOMActionType = 'click' | 'query';
+export type DOMActionType = 'click'
+  | 'type'
+  | 'uncheck'
+  | 'check'
+  | 'submit'
+  | 'select'
+  | 'query';
+
+export type DOMFormFieldValue = string | string[];
 
 export interface DOMAction extends CoreAction {
   type: DOMActionType;
+  value?: DOMFormFieldValue;
   selector: string;
 }
 
 export interface DOMActionResult extends CoreActionResult {
   type: DOMActionType;
-  elements?: Element[];
+  elements?: DOMElement[];
 }
 
 // HTTP

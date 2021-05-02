@@ -28,6 +28,9 @@ jobs:
         run: yarn format-check
       - name: Lint
         run: yarn lint
+      # @todo Assess bringing in-house to pre-built image
+      - name: Setup Playwright
+        uses: microsoft/playwright-github-action@v1
       - name: Test
         run: yarn test
       - name: Upload Code Coverage

@@ -1,6 +1,6 @@
 import * as playwright from 'playwright';
 
-import { DOMAction, Element } from '../actionTypes';
+import { DOMAction, DOMElement } from '../actionTypes';
 
 async function getProperty (element: playwright.ElementHandle, propertyName: string) {
   const result = await element?.getProperty(propertyName);
@@ -12,7 +12,7 @@ async function getClassNames (element: playwright.ElementHandle) {
   return className ? className.split(' ') : [];
 }
 
-export async function buildElement (page: playwright.Page, action: DOMAction, element: playwright.ElementHandle): Promise<Element> {
+export async function buildElement (page: playwright.Page, action: DOMAction, element: playwright.ElementHandle): Promise<DOMElement> {
   let isChecked = false;
 
   try {
