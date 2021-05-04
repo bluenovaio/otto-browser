@@ -31,6 +31,9 @@ jobs:
       # @todo Assess bringing in-house to pre-built image
       - name: Setup Playwright
         uses: microsoft/playwright-github-action@v1
+
+      # start test server
+
       - name: Test
         run: yarn test
       - name: Upload Code Coverage

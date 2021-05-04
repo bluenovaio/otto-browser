@@ -4,12 +4,24 @@ import * as _ from 'lodash';
 import { Action, ActionResult, Rule } from './actionTypes';
 import { transformActionToRule } from './rules/engine';
 import * as navigateAction from './actions/navigate';
+import * as uncheckAction from './actions/uncheck';
+import * as selectAction from './actions/select';
 import * as queryAction from './actions/query';
 import * as clickAction from './actions/click';
+import * as checkAction from './actions/check';
+import * as typeAction from './actions/type';
 import * as engine from './rules/engine';
 
 async function runAction(page: Page, action: Action): Promise<ActionResult> {
   switch (action.type) {
+    case 'type':
+      return await typeAction.run(page, action);
+    case 'uncheck':
+      return await uncheckAction.run(page, action);
+    case 'check':
+      return await checkAction.run(page, action);
+    case 'select':
+      return await selectAction.run(page, action);
     case 'click':
       return await clickAction.run(page, action);
     case 'query':

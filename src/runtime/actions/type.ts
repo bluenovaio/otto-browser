@@ -7,7 +7,7 @@ export async function run(page: playwright.Page, action: DOMAction): Promise<DOM
   const elements = await page.$$(action.selector);
 
   return {
-    type: 'query',
+    type: 'type',
     id: action.id,
     elements: await Promise.all(
       elements.map(
