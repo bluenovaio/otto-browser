@@ -7,13 +7,13 @@ const config: Config.InitialOptions = {
     }
   },
   testMatch: [
-    '**/__tests__/**/*.ts?(x)'
+    '**/__tests__/**/*.test.ts'
   ],
   testPathIgnorePatterns: [
     'dist'
   ],
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest'
+    '^.+\\.ts$': 'ts-jest'
   },
   collectCoverageFrom: ['./src/**/*']
 };

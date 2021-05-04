@@ -2,11 +2,14 @@
 // ========= Types ===========
 // ===========================
 
-export { RunTime } from './runtime/run';
+export { RunTime, RunResult, RunConfig } from './runtime/run';
 export {
   ActionType,
   DOMAction,
   DOMActionResult,
+  DOMElement,
+  HTTPRequest,
+  HTTPResponse,
   HTTPAction,
   HTTPActionResult,
   ActionConditions,

@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '12', '14', '16' ]
+        node: [ '14', '16' ]
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2.3.4
@@ -28,8 +28,17 @@ jobs:
         run: yarn format-check
       - name: Lint
         run: yarn lint
+      # @todo Assess bringing in-house to pre-built image
+      - name: Setup Playwright
+        uses: microsoft/playwright-github-action@v1
+      - name: Add pm2 package
+        run: npm i -g pm2
+      - name: Start Test Server
+        run: pm2 start ./testing/site/server.js
       - name: Test
         run: yarn test
+      - name: Stop Test Server
+        run: pm2 stop ./testing/site/server.js
       - name: Upload Code Coverage
         uses: codecov/codecov-action@v1
         with:
