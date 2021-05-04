@@ -58,7 +58,10 @@ export interface HTTPRequest {
 // Core
 // ------
 
-export type ActionType = 'click' | 'navigate' | 'type'
+export type ActionType =
+  | 'click'
+  | 'navigate'
+  | 'type'
   | 'uncheck'
   | 'check'
   | 'submit'
@@ -87,7 +90,8 @@ export interface CoreActionResult {
 // DOM
 // -----
 
-export type DOMActionType = 'click'
+export type DOMActionType =
+  | 'click'
   | 'type'
   | 'uncheck'
   | 'check'

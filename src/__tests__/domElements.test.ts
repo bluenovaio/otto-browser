@@ -21,19 +21,23 @@ const URL_TEST_SITE = 'http://localhost:3881';
 // - Only support DOMElement type
 
 function createElement(element?: ottoBrowser.DOMElement) {
-  return Object.assign({
-    checked: false,
-    classNames: [],
-    disabled: false,
-    editable: false,
-    enabled: true,
-    hidden: false,
-    id: '',
-    innerHTML: '',
-    innerText: '',
-    tagName: 'input',
-    visible: true
-  }, element, {});
+  return Object.assign(
+    {
+      checked: false,
+      classNames: [],
+      disabled: false,
+      editable: false,
+      enabled: true,
+      hidden: false,
+      id: '',
+      innerHTML: '',
+      innerText: '',
+      tagName: 'input',
+      visible: true
+    },
+    element,
+    {}
+  );
 }
 
 [
@@ -195,22 +199,25 @@ function createElement(element?: ottoBrowser.DOMElement) {
       selector: 'select'
     }
   }
-].forEach((testCase) => {
+].forEach(testCase => {
   describe(`${testCase.name}`, () => {
     let result: ottoBrowser.RunResult;
     let action: ottoBrowser.DOMActionResult;
 
     beforeAll(async () => {
-      result = await ottoBrowser.run({
-        runTime: 'chromium'
-      }, [
+      result = (await ottoBrowser.run(
         {
-          id: uuid(),
-          type: 'navigate',
-          url: URL_TEST_SITE
+          runTime: 'chromium'
         },
-        testCase.action as ottoBrowser.DOMAction
-      ]) as ottoBrowser.RunResult;
+        [
+          {
+            id: uuid(),
+            type: 'navigate',
+            url: URL_TEST_SITE
+          },
+          testCase.action as ottoBrowser.DOMAction
+        ]
+      )) as ottoBrowser.RunResult;
 
       action = result?.actions[1] as ottoBrowser.DOMActionResult;
     });
