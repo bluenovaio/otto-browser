@@ -1,5 +1,5 @@
 {
-  "name": "@bluenova/otto-browser",
+  "name": "@bluenova/otto-core",
   "version": "0.0.8",
   "description": "Core runtime for running otto actions",
   "main": "dist/main.js",
