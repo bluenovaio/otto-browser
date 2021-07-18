@@ -1,6 +1,6 @@
 import * as playwright from 'playwright';
 
-import { Action, ActionResult } from './actionTypes';
+import { Action, ActionResult } from './types';
 import * as action from './action';
 
 export type RunTime = 'chromium' | 'webkit' | 'firefox';

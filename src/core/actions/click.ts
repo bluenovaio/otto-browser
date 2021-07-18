@@ -1,18 +1,20 @@
 import * as playwright from 'playwright';
 
-import { DOMAction, DOMActionResult } from '../actionTypes';
+import { DOMAction, DOMActionResult } from '../types';
 import { buildElement } from '../data/dom';
 
 export async function run (page: playwright.Page, action: DOMAction): Promise<DOMActionResult> {
   const elements = await page.$$(action.selector);
 
   return {
-    type: 'query',
+    type: 'click',
     id: action.id,
     elements: await Promise.all(
       elements.map(
-        (element) =>
-          buildElement(page, action, element)
+        async (element) => {
+          await element.click();
+          return await buildElement(page, action, element);
+        }
       )
     )
   };

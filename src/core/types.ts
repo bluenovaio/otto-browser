@@ -42,13 +42,18 @@ export interface HTTPResponse {
   headers?: HTTPHeaders;
   status?: number;
   statusText?: string;
-  url?: string;
 }
 
 export interface HTTPRequest {
   body?: string;
   headers?: HTTPHeaders;
   method: HTTPMethod;
+}
+
+export interface HTTPCall {
+  url: string;
+  request: HTTPRequest;
+  response: HTTPResponse;
 }
 
 // ===========================
@@ -122,10 +127,8 @@ export interface HTTPAction extends CoreAction {
   url: string;
 }
 
-export interface HTTPActionResult extends CoreActionResult {
+export interface HTTPActionResult extends CoreActionResult, HTTPCall {
   type: HTTPActionType;
-  request?: HTTPRequest;
-  response?: HTTPResponse;
 }
 
 // Aggregate

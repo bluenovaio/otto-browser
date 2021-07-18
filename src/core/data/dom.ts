@@ -1,6 +1,6 @@
 import * as playwright from 'playwright';
 
-import { DOMAction, DOMElement } from '../actionTypes';
+import { DOMAction, DOMElement } from '../types';
 
 async function getProperty (element: playwright.ElementHandle, propertyName: string) {
   const result = await element?.getProperty(propertyName);
