@@ -1,6 +1,6 @@
 import * as playwright from 'playwright';
 
-import { DOMAction, DOMActionResult } from '../actionTypes';
+import { DOMAction, DOMActionResult } from '../types';
 import { buildElement } from '../data/dom';
 
 export async function run(page: playwright.Page, action: DOMAction): Promise<DOMActionResult> {

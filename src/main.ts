@@ -2,7 +2,7 @@
 // ========= Types ===========
 // ===========================
 
-export { RunTime, RunResult, RunConfig } from './runtime/run';
+export { RunTime, RunResult, RunConfig } from './core/run';
 export {
   ActionType,
   DOMAction,
@@ -16,10 +16,11 @@ export {
   Action,
   ActionResult,
   RuleEvent
-} from './runtime/actionTypes';
+} from './core/types';
 
 // ===========================
 // ======== Methods ==========
 // ===========================
 
-export { run } from './runtime/run';
+export { run } from './core/run';
+export { scan } from './core/scan';

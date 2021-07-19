@@ -1,7 +1,7 @@
 import { Page } from 'playwright';
 import * as _ from 'lodash';
 
-import { Action, ActionResult, Rule } from './actionTypes';
+import { Action, ActionResult, Rule } from './types';
 import { transformActionToRule } from './rules/engine';
 import * as navigateAction from './actions/navigate';
 import * as uncheckAction from './actions/uncheck';

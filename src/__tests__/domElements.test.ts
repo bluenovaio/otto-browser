@@ -41,8 +41,10 @@ function createElement(element?: ottoBrowser.DOMElement) {
 }
 
 [
+
+  /** @file core/actions/check.ts */
   {
-    name: 'checkbox',
+    name: 'check',
     selector: 'input[type="checkbox"]',
     elements: [
       createElement({
@@ -58,6 +60,8 @@ function createElement(element?: ottoBrowser.DOMElement) {
       selector: 'input[type="checkbox"]'
     }
   },
+
+  /** @file core/actions/uncheck.ts */
   {
     name: 'uncheck',
     selector: 'input[type="checkbox"]',
@@ -75,6 +79,8 @@ function createElement(element?: ottoBrowser.DOMElement) {
       selector: 'input[type="checkbox"]'
     }
   },
+
+  /** @file core/actions/click.ts */
   {
     name: 'click',
     selector: 'button',
@@ -103,6 +109,8 @@ function createElement(element?: ottoBrowser.DOMElement) {
       selector: 'button'
     }
   },
+
+  /** @file core/actions/query.ts */
   {
     name: 'query',
     selector: 'button',
@@ -131,6 +139,8 @@ function createElement(element?: ottoBrowser.DOMElement) {
       selector: 'button'
     }
   },
+
+  /** @file core/actions/type.ts */
   {
     name: 'type',
     selector: '#name',
@@ -163,6 +173,8 @@ function createElement(element?: ottoBrowser.DOMElement) {
       selector: '#name'
     }
   },
+
+  /** @file core/actions/select.ts */
   {
     name: 'select',
     selector: 'select',
@@ -199,12 +211,15 @@ function createElement(element?: ottoBrowser.DOMElement) {
       selector: 'select'
     }
   }
+
 ].forEach(testCase => {
   describe(`${testCase.name}`, () => {
     let result: ottoBrowser.RunResult;
     let action: ottoBrowser.DOMActionResult;
 
     beforeAll(async () => {
+      // We have to navigate to the page to be able
+      // to run any type of element tests
       result = (await ottoBrowser.run(
         {
           runTime: 'chromium'
