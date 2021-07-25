@@ -7,9 +7,11 @@ import { HTTPCall, HTTPMethod, HTTPRequest, HTTPResponse } from '../types';
 // -----
 
 async function getResponseBody(response: playwright.Response) {
-  const [, jsonBody] = await safe.execAsync(response.json);
-  const [, textBody] = await safe.execAsync(response.text);
-  const [, bufferBody] = await safe.execAsync(response.body);
+  // We have to wrap in functions to prevent losing context
+  // (Error: "Cannot read property '_wrapApiCall' of undefined")
+  const [, jsonBody] = await safe.execAsync(() => response.json());
+  const [, textBody] = await safe.execAsync(() => response.text());
+  const [, bufferBody] = await safe.execAsync(() => response.body());
 
   return JSON.stringify(jsonBody) || textBody || bufferBody?.toString();
 }

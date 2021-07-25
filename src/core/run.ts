@@ -77,9 +77,10 @@ export async function run(
     const resultsStart = await action.runStart(page, assertStartActions);
 
     const results = await action.runStandard(page, standardActions);
-    await browser.close();
 
     const resultsEnd = await action.runEnd(page, rawRequests, assertEndActions);
+
+    await browser.close();
 
     return {
       actions: [

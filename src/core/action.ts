@@ -49,9 +49,11 @@ async function buildHttpCalls(requests: playwright.Request[]): Promise<HTTPCall[
   return _.compact(
     await Promise.all(
       requests.map(
-        async (request) => httpData.buildHttpCall(
-          await request.response()
-        )
+        async (request) => {
+          return httpData.buildHttpCall(
+            await request.response()
+          );
+        }
       )
     )
   );
