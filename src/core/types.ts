@@ -123,7 +123,9 @@ export type ActionType =
   | 'check'
   | 'submit'
   | 'select'
-  | 'query';
+  | 'query'
+  | 'assertEnd'
+  | 'assertStart';
 
 export interface CoreActionConditions {
   params?: Record<string, unknown>;
@@ -183,12 +185,29 @@ export interface HTTPActionResult extends CoreActionResult, HTTPCall {
   type: HTTPActionType;
 }
 
+// Assert-ONLY Actions (no user-like action required)
+// -----
+
+export type AssertActionType = 'assertStart' | 'assertEnd';
+
+export interface AssertAction extends Omit<CoreAction, 'id'> {
+  type: AssertActionType;
+}
+
+export interface AssertActionResult extends Omit<CoreActionResult, 'id'> {
+  type: AssertActionType;
+}
+
 // Aggregate
 // -----
 
-export type Action = DOMAction | HTTPAction;
+export type Action = DOMAction
+  | HTTPAction
+  | AssertAction;
 
-export type ActionResult = DOMActionResult | HTTPActionResult;
+export type ActionResult = DOMActionResult
+  | HTTPActionResult
+  | AssertActionResult;
 
 // ===========================
 // ========= Rules ===========

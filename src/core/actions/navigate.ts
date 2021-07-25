@@ -5,7 +5,7 @@ import * as httpData from '../data/http';
 
 export async function run (page: playwright.Page, action: HTTPAction): Promise<HTTPActionResult> {
   const response = await page.goto(action.url);
-  response?.finished();
+  await response?.finished();
   const httpCall = await httpData.buildHttpCall(response) as Required<HTTPCall>;
 
   return {

@@ -1,8 +1,6 @@
 import * as playwright from 'playwright';
-import * as _ from 'lodash';
 
-import { Action, ActionResult, HTTPCall } from './types';
-import * as httpData from './data/http';
+import { Action, ActionResult, AssertAction } from './types';
 import * as action from './action';
 
 // ===========================
@@ -11,7 +9,7 @@ import * as action from './action';
 
 export type RunTime = 'chromium' | 'webkit' | 'firefox';
 
-function getRunTime(runTime: RunTime) {
+function getRunTime(runTime: RunTime): playwright.BrowserType {
   switch (runTime) {
     case 'webkit':
       return playwright.webkit;
@@ -30,19 +28,24 @@ export interface RunConfig {
 
 export interface RunResult {
   actions: ActionResult[];
-  requests: HTTPCall[];
 }
 
-async function buildRequests(requests: playwright.Request[]): Promise<HTTPCall[]> {
-  return _.compact(
-    await Promise.all(
-      requests.map(
-        async (request) => httpData.buildHttpCall(
-          await request.response()
-        )
-      )
-    )
-  );
+function getGroupedActions(allActions: Action[]): [AssertAction[], Action[], AssertAction[]] {
+  const assertStartActions: AssertAction[] = [];
+  const assertEndActions: AssertAction[] = [];
+  const standardActions: Action[] = [];
+
+  allActions.forEach((act) => {
+    if (act.type === 'assertEnd') {
+      assertEndActions.push(act);
+    } else if (act.type === 'assertStart') {
+      assertStartActions.push(act);
+    } else {
+      standardActions.push(act);
+    }
+  });
+
+  return [assertStartActions, standardActions, assertEndActions];
 }
 
 /**
@@ -60,19 +63,30 @@ export async function run(
 
   const rawRequests: playwright.Request[] = [];
 
-  // Intercept and record all HTTPCalls for processing
+  // Intercept and record all HTTPCalls for processing as we
+  // must set this prior to any requests being made.
   await page.route('**', route => {
     rawRequests.push(route.request());
     return route.continue();
   });
 
+  // Parse out actions so we can separate based on the core type of action.
+  const [assertStartActions, standardActions, assertEndActions] = getGroupedActions(actions);
+
   try {
-    const browserResults = await action.runAll(page, actions);
+    const resultsStart = await action.runStart(page, assertStartActions);
+
+    const results = await action.runStandard(page, standardActions);
     await browser.close();
 
+    const resultsEnd = await action.runEnd(page, rawRequests, assertEndActions);
+
     return {
-      actions: browserResults,
-      requests: await buildRequests(rawRequests)
+      actions: [
+        ...resultsStart,
+        ...results,
+        ...resultsEnd
+      ]
     };
   } catch (err) {
     await browser.close();
