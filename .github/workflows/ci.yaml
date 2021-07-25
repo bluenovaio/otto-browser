@@ -40,6 +40,6 @@ jobs:
       - name: Stop Test Server
         run: pm2 stop ./testing/site/server.js
       - name: Upload Code Coverage
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@2.0.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
