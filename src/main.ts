@@ -23,4 +23,3 @@ export {
 // ===========================
 
 export { run } from './core/run';
-export { scan } from './core/scan';

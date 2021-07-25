@@ -1,44 +1,59 @@
 import * as playwright from 'playwright';
-import { HTTPMethod, HTTPRequest, HTTPResponse } from '../types';
-import { HTTPCall } from '../scan';
 
-// why is URL in response
-// need to REALLY break this out and handle many cases and full objects for response and request
+import * as safe from '../../lib/safe';
+import { HTTPCall, HTTPMethod, HTTPRequest, HTTPResponse } from '../types';
+
+// Response
+// -----
+
+async function getResponseBody(response: playwright.Response) {
+  const [, jsonBody] = await safe.execAsync(response.json);
+  const [, textBody] = await safe.execAsync(response.text);
+  const [, bufferBody] = await safe.execAsync(response.body);
+
+  return JSON.stringify(jsonBody) || textBody || bufferBody?.toString();
+}
+
 export async function buildResponse(response: playwright.Response): Promise<HTTPResponse> {
-  let jsonBody = null;
-  let body = null;
-
-  try {
-    jsonBody = await response.json();
-  } catch (err) {}
-
-  try {
-    body = jsonBody ?? await response.text();
-  } catch (err) {}
-
   return {
-    body: body ? body.toString() : undefined,
-    bodyType: jsonBody ? 'json' : 'unknown',
+    body: await getResponseBody(response),
     headers: response.headers(),
     status: response.status(),
-    statusText: response.statusText(),
+    statusText: response.statusText()
   };
 }
 
-export async function buildRequest(response: playwright.Response): Promise<HTTPRequest> {
-  const request = await response.request();
+// Request
+// -----
+
+export async function buildRequest(request: playwright.Request): Promise<HTTPRequest> {
+  const timing = request.timing();
+  const [, body] = safe.exec(request.postDataJSON);
+
   return {
     headers: request.headers(),
-    body: request.postDataBuffer() as any,
-    method: request.method() as HTTPMethod
+    body: JSON.stringify(body),
+    method: request.method() as HTTPMethod,
+    isNavigation: request.isNavigationRequest(),
+    timing: {
+      startTime: timing.startTime,
+      domainLookupStart: timing.domainLookupStart,
+      domainLookupEnd: timing.domainLookupEnd,
+      connectStart: timing.connectStart,
+      secureConnectionStart: timing.secureConnectionStart,
+      connectEnd: timing.connectEnd,
+      requestStart: timing.requestStart,
+      responseStart: timing.responseStart,
+      responseEnd: timing.responseEnd
+    }
   };
 }
 
 export async function buildHttpCall(response: playwright.Response | null): Promise<HTTPCall | null> {
   if (response) {
     return {
-      url: '',
-      request: await buildRequest(response),
+      url: response.url(),
+      request: await buildRequest(response.request()),
       response: await buildResponse(response)
     };
   } else {

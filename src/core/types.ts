@@ -34,10 +34,7 @@ export type HTTPMethod =
   | 'OPTIONS'
   | 'PATCH';
 
-export type HTTPBodyType = 'json' | 'text' | 'xml' | 'unknown';
-
 export interface HTTPResponse {
-  bodyType: HTTPBodyType;
   body?: string;
   headers?: HTTPHeaders;
   status?: number;
@@ -48,6 +45,61 @@ export interface HTTPRequest {
   body?: string;
   headers?: HTTPHeaders;
   method: HTTPMethod;
+  isNavigation: boolean;
+  timing: {
+    /**
+     * Request start time in milliseconds elapsed since January 1, 1970 00:00:00 UTC
+     */
+    startTime: number;
+
+    /**
+     * Time immediately before the browser starts the domain name lookup for the resource. The value is given in milliseconds
+     * relative to `startTime`, -1 if not available.
+     */
+    domainLookupStart: number;
+
+    /**
+     * Time immediately after the browser starts the domain name lookup for the resource. The value is given in milliseconds
+     * relative to `startTime`, -1 if not available.
+     */
+    domainLookupEnd: number;
+
+    /**
+     * Time immediately before the user agent starts establishing the connection to the server to retrieve the resource. The
+     * value is given in milliseconds relative to `startTime`, -1 if not available.
+     */
+    connectStart: number;
+
+    /**
+     * Time immediately before the browser starts the handshake process to secure the current connection. The value is given in
+     * milliseconds relative to `startTime`, -1 if not available.
+     */
+    secureConnectionStart: number;
+
+    /**
+     * Time immediately before the user agent starts establishing the connection to the server to retrieve the resource. The
+     * value is given in milliseconds relative to `startTime`, -1 if not available.
+     */
+    connectEnd: number;
+
+    /**
+     * Time immediately before the browser starts requesting the resource from the server, cache, or local resource. The value
+     * is given in milliseconds relative to `startTime`, -1 if not available.
+     */
+    requestStart: number;
+
+    /**
+     * Time immediately after the browser starts requesting the resource from the server, cache, or local resource. The value
+     * is given in milliseconds relative to `startTime`, -1 if not available.
+     */
+    responseStart: number;
+
+    /**
+     * Time immediately after the browser receives the last byte of the resource or immediately before the transport connection
+     * is closed, whichever comes first. The value is given in milliseconds relative to `startTime`, -1 if not available.
+     */
+    responseEnd: number;
+  }
 }
 
 export interface HTTPCall {

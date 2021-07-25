@@ -20,7 +20,7 @@ const URL_TEST_SITE = 'http://localhost:3881';
 // - We must update ALL test cases if the base element is changed (i.e. add/remove field)
 // - Only support DOMElement type
 
-function createElement(element?: ottoBrowser.DOMElement) {
+function createElementData(element?: ottoBrowser.DOMElement) {
   return Object.assign(
     {
       checked: false,
@@ -47,7 +47,7 @@ function createElement(element?: ottoBrowser.DOMElement) {
     name: 'check',
     selector: 'input[type="checkbox"]',
     elements: [
-      createElement({
+      createElementData({
         tagName: 'input',
         id: 'yes',
         editable: true,
@@ -66,7 +66,7 @@ function createElement(element?: ottoBrowser.DOMElement) {
     name: 'uncheck',
     selector: 'input[type="checkbox"]',
     elements: [
-      createElement({
+      createElementData({
         tagName: 'input',
         id: 'yes',
         editable: true,
@@ -85,7 +85,7 @@ function createElement(element?: ottoBrowser.DOMElement) {
     name: 'click',
     selector: 'button',
     elements: [
-      createElement({
+      createElementData({
         tagName: 'button',
         classNames: [
           'bg-blue-500',
@@ -115,7 +115,7 @@ function createElement(element?: ottoBrowser.DOMElement) {
     name: 'query',
     selector: 'button',
     elements: [
-      createElement({
+      createElementData({
         tagName: 'button',
         classNames: [
           'bg-blue-500',
@@ -145,7 +145,7 @@ function createElement(element?: ottoBrowser.DOMElement) {
     name: 'type',
     selector: '#name',
     elements: [
-      createElement({
+      createElementData({
         tagName: 'input',
         classNames: [
           'shadow',
@@ -179,7 +179,7 @@ function createElement(element?: ottoBrowser.DOMElement) {
     name: 'select',
     selector: 'select',
     elements: [
-      createElement({
+      createElementData({
         tagName: 'select',
         classNames: [
           'block',
